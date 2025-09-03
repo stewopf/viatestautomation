@@ -28,12 +28,37 @@ test.describe ('Tests editing an existing Merchant', () => {
     await page.locator("[onclick='cancel(event)']").click();
   })
 
-  test('Edit an existing merchant Site', async({page}) => {
+  /************** START: Site testing **************/
+  //TODO: look into how this interacts with socket connections
+  test('Generate a existing merchant site', async({page}) => {
     await page.getByText('Work with an existing Merchant').click();
     await page.getByText('AD Construction').click();
     await page.getByText(' Edit Home Page ').click();
     await page.getByText('As easy as 1, 2, 3 (4?)').click();
     await expect(page.locator("[name='imageSourceKey']")).toHaveValue('freepik');
   })
-  //href="/page/68376431ccab1ae859f61a7b/edit"
+
+  test.skip('Select a Template Selection', async({page}) => {
+    //Change selected template
+    //check for update to template
+    //expect template is correctly updated
+  })
+
+  test.skip('Apply template colours', async({page}) => {
+    //Select a color or variety of colors
+    //Apply changes
+    //
+  })
+  /************** END: Site testing **************/
+
+  test.skip('Can Navigate to Growth Center', async({page}) => {
+    //Navigate to Business Overview
+    //Click Growth Center
+    //Verify merchant app loads
+  })
+
+  //TODO: Add an e2e test where lead is generated and verify it appears
+  test.skip('Verify loads loaded', async({page}) => {
+
+  })
 })
