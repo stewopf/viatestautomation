@@ -18,11 +18,12 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 3,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+  // workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [['html', { open: 'on-failure' }], ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -30,6 +31,9 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    // launchOptions: {
+    //   slowMo: 500,    // Slow down actions by 500ms
+    // },
   },
 
   /* Configure projects for major browsers */
@@ -38,15 +42,51 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'chromium-mobile',
+      use: {
+        ...devices['iPhone X'], // Predefined device settings
+      },
+    },
+    {
+      name: 'chromium-tablet',
+      use: {
+        ...devices['iPad (gen 7)'], // Predefined device settings
+      },
+    },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
+    {
+      name: 'firefox-mobile',
+      use: {
+        ...devices['iPhone X'], // Predefined device settings
+      },
+    },
+    {
+      name: 'firefox-tablet',
+      use: {
+        ...devices['iPad (gen 7)'], // Predefined device settings
+      },
+    },
 
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'webkit-mobile',
+      use: {
+        ...devices['iPhone X'], // Predefined device settings
+      },
+    },
+    {
+      name: 'webkit-tablet',
+      use: {
+        ...devices['iPad (gen 7)'], // Predefined device settings
+      },
     },
 
     /* Test against mobile viewports. */
