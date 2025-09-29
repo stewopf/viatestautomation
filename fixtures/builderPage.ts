@@ -6,7 +6,7 @@ type BuilderFixture = {
 }
 
 export const test = base.extend<BuilderFixture>({
-    builderPage: async ({ page }, use, testInfo) => {
+    builderPage: async ({ page }, use) => {
         const builderPage = new BuilderPage(page);
         await use(builderPage)
     }

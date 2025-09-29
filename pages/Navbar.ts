@@ -50,7 +50,7 @@ export class Navbar {
     }
 
     async clickLogo() {
-        return await this.verifyLogo;
+        return await this.verifyLogo.click();
     }
 
     async navigateToBuilderPage() {
@@ -73,7 +73,7 @@ export class Navbar {
         return await this.sideBarLinksCount.count();
     }
 
-    async getSidebarLinkHref(index) {
+    async getSidebarLinkHref(index: number) {
         return await this.sideBarLinksCount.nth(index).getAttribute('href');
     }
 

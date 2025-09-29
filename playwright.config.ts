@@ -23,7 +23,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   // workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html', { open: 'on-failure' }], ['list']],
+  reporter: [['html', { outputFolder: 'playwright-report', open: 'on-failure' }], ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -31,9 +31,20 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    // launchOptions: {
-    //   slowMo: 500,    // Slow down actions by 500ms
-    // },
+    launchOptions: {
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-extensions',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+      ],   
+      // slowMo: 500,    // Slow down actions by 500ms
+    },
+    
   },
 
   /* Configure projects for major browsers */
@@ -99,7 +110,7 @@ export default defineConfig({
     //   use: { ...devices['iPhone 12'] },
     // },
 
-    /* Test against branded browsers. */
+     /* Test against branded browsers. */
     // {
     //   name: 'Microsoft Edge',
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },

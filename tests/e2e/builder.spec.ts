@@ -5,10 +5,7 @@ import { linkCard } from "../../utilities/common/LinkCard";
 
 describe("Builder Test suit", () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(`${envVariable.local}/builder`, {
-            waitUntil: 'domcontentloaded',
-            timeout: 15000,
-        })
+        await page.goto(`${envVariable.local}/builder`)
     })
 
     test("Verify the Logo is visible", async ({ builderPage }) => {
