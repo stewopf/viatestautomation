@@ -91,7 +91,6 @@ test.describe("Tenant Suit", async () => {
   })
 
   test("Verify the Existing Merchants Count in the pagination with total Numbers of Page", async ({ tenantPage }) => {
-    const dropdown = await tenantPage.paginationDropdown();
     const result = await tenantPage.paginationDropdownValuesWithClicks();
 
     if (!result) {

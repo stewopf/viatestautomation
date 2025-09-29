@@ -337,7 +337,7 @@ export default class TenantPage extends Navbar {
     }
 
     get firstMerchantInTable() {
-        const element=this.page.locator("(//tbody/tr/td[@data-label='Merchant']/a)[1]").click()
+        const element = this.page.locator("(//tbody/tr/td[@data-label='Merchant']/a)[1]").click()
         if (element !== null) {
             return element
         } else throw new Error("Cannot find first Merchant in the table.")
@@ -383,55 +383,50 @@ export default class TenantPage extends Navbar {
         return await this.lastPage.click()
     }
 
-    // In your POM file (add wait after selectOption via expect polling)
-async paginationDropdownValuesWithClicks() {
-  const dropdown = await this.pageDropdown;
-  const tableValueCount = await this.getMerchantTableCount();
 
-  const options = await dropdown.locator('option').allTextContents();
-  const cleanOptions = options.map(text => text?.replace(/\s+/g, '').trim() || '');
-  const randomIndex = Math.floor(Math.random() * cleanOptions.length);
-  const dropdownValue = cleanOptions[randomIndex];
+    async paginationDropdownValuesWithClicks() {
+        const dropdown = await this.pageDropdown;
+        const tableValueCount = await this.getMerchantTableCount();
 
-  await dropdown.selectOption({ label: dropdownValue });
+        const options = await dropdown.locator('option').allTextContents();
+        const cleanOptions = options.map(text => text?.replace(/\s+/g, '').trim() || '');
+        const randomIndex = Math.floor(Math.random() * cleanOptions.length);
+        const dropdownValue = cleanOptions[randomIndex];
 
-  const perPage = Number(dropdownValue);
-  const totalPages = Math.ceil(tableValueCount / perPage);
-//   console.log(tableValueCount, perPage, totalPages, "count");
+        await dropdown.selectOption({ label: dropdownValue });
 
-  const pageIndicator = this.pageNumber;
+        const perPage = Number(dropdownValue);
+        const totalPages = Math.ceil(tableValueCount / perPage);
+        //   const pageIndicator = this.pageNumber;
+        const initialPagination = `Page 1 of ${totalPages} (${tableValueCount})`;
+        //   const getPaginationValue = async () => {
+        //     const text = await pageIndicator.textContent();
+        //     return text?.trim() || '';
+        //   };
 
-  const initialPagination = `Page 1 of ${totalPages} (${tableValueCount})`;
-//   await expect(pageIndicator).toHaveText(initialPagination); // Wait for async update
+        const paginationStates: { action: string; paginationValue: string }[] = [];
 
-  const getPaginationValue = async () => {
-    const text = await pageIndicator.textContent();
-    return text?.trim() || '';
-  };
+        paginationStates.push({ action: 'Initial Load', paginationValue: initialPagination });
 
-  const paginationStates: { action: string; paginationValue: string }[] = [];
+        if (totalPages > 1) {
+            paginationStates.push({ action: 'Last Page', paginationValue: `Page ${totalPages} of ${totalPages} (${tableValueCount})` });
 
-  paginationStates.push({ action: 'Initial Load', paginationValue: initialPagination }); // Use constructed (now verified)
+            if (totalPages > 2) {
+                paginationStates.push({ action: 'Previous Page', paginationValue: `Page ${totalPages - 1} of ${totalPages} (${tableValueCount})` });
+            }
 
-  if (totalPages > 1) {
-    paginationStates.push({ action: 'Last Page', paginationValue: `Page ${totalPages} of ${totalPages} (${tableValueCount})` });
+            paginationStates.push({ action: 'First Page', paginationValue: `Page 1 of ${totalPages} (${tableValueCount})` });
 
-    if (totalPages > 2) {
-      paginationStates.push({ action: 'Previous Page', paginationValue: `Page ${totalPages - 1} of ${totalPages} (${tableValueCount})` });
+            if (totalPages > 1) {
+                paginationStates.push({ action: 'Next Page', paginationValue: `Page 2 of ${totalPages} (${tableValueCount})` });
+            }
+        }
+
+        return {
+            dropdownValue,
+            paginationStates
+        };
     }
-
-    paginationStates.push({ action: 'First Page', paginationValue: `Page 1 of ${totalPages} (${tableValueCount})` });
-
-    if (totalPages > 1) {
-      paginationStates.push({ action: 'Next Page', paginationValue: `Page 2 of ${totalPages} (${tableValueCount})` });
-    }
-  }
-
-  return {
-    dropdownValue,
-    paginationStates
-  };
-}
 
     async searchMerchantAndPressEnter(Value: string) {
         if (Value !== null && Value !== undefined) {
@@ -602,7 +597,7 @@ async paginationDropdownValuesWithClicks() {
         if (!element) {
             throw new Error('Tenant ID not found in onclick attribute');
         }
-        return await actionElement 
+        return await actionElement
     }
 
     async notesAddsButtononTenatPage() {
@@ -640,13 +635,13 @@ async paginationDropdownValuesWithClicks() {
         return await this.firstMerchantInTable;
     }
 
-    async refreshDataFromHighleve(tenantId:string) {
-        const element=this.page.locator(`//a[@href="/tenant/${tenantId}?action=refresh"]`).click()
+    async refreshDataFromHighleve(tenantId: string) {
+        const element = this.page.locator(`//a[@href="/tenant/${tenantId}?action=refresh"]`).click()
         return await element;
     }
 
     async openTheMerchantDashboard() {
-        const element=this.page.locator('//a[@href="http://localhost:8080/dashboard?v=business&tenantId=68d5a4a2eb8bd5c7233a8cf2"]').click()
+        const element = this.page.locator('//a[@href="http://localhost:8080/dashboard?v=business&tenantId=68d5a4a2eb8bd5c7233a8cf2"]').click()
         return await element;
     }
 
