@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "export-report": "npx ts-node ./utilities/common/ExportReportToPdf.ts",
+    "view-all": "npx playwright show-report && npx playwright show-trace test-results/*/trace.zip"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stewopf/viatestautomation.git"
@@ -17,10 +21,11 @@
   "homepage": "https://github.com/stewopf/viatestautomation#readme",
   "devDependencies": {
     "@playwright/test": "^1.55.0",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.10.1",
     "allure-playwright": "^3.4.1"
   },
   "dependencies": {
-    "mongodb": "^6.19.0"
+    "mongodb": "^6.19.0",
+    "testreport-io": "^1.0.10"
   }
 }

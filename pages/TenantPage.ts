@@ -1,5 +1,6 @@
-import { expect, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 import { Navbar } from "./Navbar";
+import { envVariable } from "../utilities/env";
 
 export default class TenantPage extends Navbar {
     constructor(page: Page) {
@@ -229,6 +230,13 @@ export default class TenantPage extends Navbar {
         if (editButton !== null) {
             return editButton
         } else throw new Error("Cannot find the Hours of operation field in Merchant page");
+    }
+
+    get editHomePageTitle() {
+        const editHomePageTitle = this.page.locator("//div[@class='editBar']/h3").textContent()
+        if (editHomePageTitle !== null) {
+            return editHomePageTitle
+        } else throw new Error("Cannot find the Edit Home Page Title in Edit Website page")
     }
 
     get editButtonInMerchant() {
@@ -635,13 +643,18 @@ export default class TenantPage extends Navbar {
         return await this.firstMerchantInTable;
     }
 
+    async editHomePageTitleElem() {
+        const title = await this.editHomePageTitle.then(value => value?.replace(/\s+/g, ' '))
+        return await title;
+    }
+
     async refreshDataFromHighleve(tenantId: string) {
         const element = this.page.locator(`//a[@href="/tenant/${tenantId}?action=refresh"]`).click()
         return await element;
     }
 
     async openTheMerchantDashboard() {
-        const element = this.page.locator('//a[@href="http://localhost:8080/dashboard?v=business&tenantId=68d5a4a2eb8bd5c7233a8cf2"]').click()
+        const element = this.page.locator(`//a[@href="${envVariable.merchantDashboard}/dashboard?v=business&tenantId=68d5a4a2eb8bd5c7233a8cf2"]`).click()
         return await element;
     }
 

@@ -35,6 +35,36 @@ async function queryDatabase(collectionName, query = {}, options = {}) {
   }
 }
 
+async function deleteFromDatabase(collectionName, query) {
+  if (!query || Object.keys(query).length === 0) {
+    throw new Error('Deletion query cannot be empty');
+  }
+  try {
+    await connectToDatabase(); 
+    const collection = db.collection(collectionName);
+    const result = await collection.deleteOne(query);
+    if (result.deletedCount === 0) {
+      console.warn('No document matched the query for deletion');
+    }
+    return result;
+  } catch (error) {
+    console.error('MongoDB deletion error:', error);
+    throw error;
+  }
+}
+
+async function findOneInDatabase(collectionName, query = {}, options = {}) {
+  try {
+    await connectToDatabase();
+    const collection = db.collection(collectionName);
+    const doc = await collection.findOne(query, options);
+    return doc;
+  } catch (error) {
+    console.error('MongoDB findOne error:', error);
+    throw error;
+  }
+}
+
 async function closeConnection() {
   if (client) {
     await client.close();
@@ -43,4 +73,4 @@ async function closeConnection() {
   }
 }
 
-module.exports = { queryDatabase, closeConnection };
+module.exports = { queryDatabase,deleteFromDatabase, closeConnection, findOneInDatabase };
